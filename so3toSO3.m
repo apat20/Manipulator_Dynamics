@@ -7,7 +7,5 @@ function exp_omega_hat_theta = so3toSO3(omega, theta)
     
    %Using the Rodriguez formula to calculate the exponential of omega
    %formula to get the exponential coordinates for rotation.
-   
-   % Write a function for this and include it in here.!!!!!
    exp_omega_hat_theta = I + omega_hat*sin(theta) + omega_hat^2*(1-cos(theta));
 end

@@ -40,14 +40,15 @@ g_23 = inverseTransmat(g_02)*g_03;
 
 % Concatenating all the transformation matrices in a single
 % multidimensional array.
-M = cat(3, g_01, g_12, g_23);
+Mi = cat(3, g_01, g_02, g_03);
+Mlist = cat(3, g_01, g_12, g_23);
 
 % Concatenating the spatial inertial matrix into a single multidimensional
 % array.
 G1 = diag(g1);
 G2 = diag(g2);
 
-G = cat(3, G1, G2);
+Glist = cat(3, G1, G2);
 
 % Computing the twists and concatenating them into a single
 % multidimensional array
@@ -61,7 +62,7 @@ twist_list = [twist_1, twist_2];
 
 % Computing the torques and forces required at each joints using the
 % Newton-Euler Recursive Algorithm for inverse dynamics.
-[tau, F_i, V_i, Vdot_i] = InverseDynamics(M, G, twist_list, theta, theta_dot, theta_double_dot, Ftip);
+[tau, F_i, V_i, Vdot_i, A_i, Ad_gi] = InverseDynamics(Mi, Mlist, Glist, twist_list, theta, theta_dot, theta_double_dot, Ftip);
 
 
 

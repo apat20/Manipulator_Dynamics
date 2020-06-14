@@ -60,9 +60,11 @@ twist_2 = GetTwist(omega, q_2);
 
 twist_list = [twist_1, twist_2];
 
+g = [0;0;9.8];
+
 % Computing the torques and forces required at each joints using the
 % Newton-Euler Recursive Algorithm for inverse dynamics.
-[tau, F_i, V_i, Vdot_i, A_i, Ad_gi] = InverseDynamics(Mi, Mlist, Glist, twist_list, theta, theta_dot, theta_double_dot, Ftip);
+[tau, F_i, V_i, Vdot_i, A_i, Ad_gi] = InverseDynamics(Mi, Mlist, Glist, twist_list, theta, theta_dot, theta_double_dot, Ftip, g);
 
 
 

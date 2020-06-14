@@ -60,11 +60,13 @@ twist_2 = GetTwist(omega, q_2);
 
 twist_list = [twist_1, twist_2];
 
+g = [0;0;9.8];
+
 % Computing the torques and forces required at each joints using the
 % Newton-Euler Recursive Algorithm for inverse dynamics.
-[tau, F_i, V_i, Vdot_i, A_i, Ad_gi] = InverseDynamics(Mi, Mlist, Glist, twist_list, theta, theta_dot, theta_double_dot, Ftip);
+[tau, F_i, V_i, Vdot_i, A_i, Ad_gi] = InverseDynamics(Mi, Mlist, Glist, twist_list, theta, theta_dot, theta_double_dot, Ftip,g);
 
-%% Computing the Dynamics equations for 2R manipulator in closed form:
+%% Computing the Dynamics equation for 2R manipulator in closed form:
 
 m = size(A_i, 2);
 n = size(V_i,1);
@@ -147,7 +149,7 @@ V_base(1:6,:) = Ad_gi(:,:,1)*V_i(:,1);
 Vdot_base(1:6,:) = Ad_gi(:,:,1)*Vdot_i(:,1);
 F_stacked(7:12,:)= Ad_gi(:,:,3)'*F_i(:,3);
 
-%% Computing the terms of the Dynamic Equations for a 2R Manipulator:
+%% Computing the terms of the Dynamics Equation for a 2R Manipulator:
 
 Mass_Matrix = A'*L'*G*L*A;
 C_Vector = -A'*L'*(G*L*ad_A_theta_dot*W + ad_Vi'*G)*L*A*theta_dot;

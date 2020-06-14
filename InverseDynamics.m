@@ -1,9 +1,8 @@
-function [tau, F_i, V_i, Vdot_i, A_i, Ad_gi] = InverseDynamics(Mi, Mlist, Glist, Slist, theta, theta_dot, theta_double_dot, Ftip)
+function [tau, F_i, V_i, Vdot_i, A_i, Ad_gi] = InverseDynamics(Mi, Mlist, Glist, Slist, theta, theta_dot, theta_double_dot, Ftip, g)
 
     n = size(theta,1);
 
     % Initializing the multidimensional arrays
-    g = [0;0;9.8];
     % Initializing Mi to a 4*4 identity matrix is incorrect and this needs 
     % be rectified.
     A_i = zeros(6,n);
@@ -24,6 +23,7 @@ function [tau, F_i, V_i, Vdot_i, A_i, Ad_gi] = InverseDynamics(Mi, Mlist, Glist,
     tau = zeros(n,1);
 
     Ad_gi(:,:,n+1) = GetAdjoint(inverseTransmat(Mlist(:,:,n+1)));
+    
     % Forward iterations of the Newton-Euler inverse dynamics algorithm.
     for i = 1:n
         A_i(:,i) = GetAdjoint(inverseTransmat(Mi(:,:,i)))*Slist(:,i);

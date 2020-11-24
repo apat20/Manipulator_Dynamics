@@ -1,4 +1,4 @@
-function [tau, F_i, V_i, Vdot_i, A_i, Ad_gi] = InverseDynamics(Mi, Mlist, Glist, Slist, theta, theta_dot, theta_double_dot, Ftip, g)
+function [tau, F_i, V_i, Vdot_i, A_i, Ad_gi] = InverseDynamics(Mi, Mlist, Glist, Slist, theta, theta_dot, theta_double_dot, Ftip, g, q)
 
     n = size(theta,1);
 
@@ -26,8 +26,12 @@ function [tau, F_i, V_i, Vdot_i, A_i, Ad_gi] = InverseDynamics(Mi, Mlist, Glist,
     
     % Forward iterations of the Newton-Euler inverse dynamics algorithm.
     for i = 1:n
+%         Mi = Mi * Mlist(:, :, i);
         A_i(:,i) = GetAdjoint(inverseTransmat(Mi(:,:,i)))*Slist(:,i);
-        Ad_gi(:,:,i) = GetAdjoint(se3toSE3(Slist(:,i), -theta(i))*inverseTransmat(Mlist(:,:,i)));
+        
+%         A_i(:,i) = GetAdjoint(inverseTransmat(Mi))*Slist(:,i);
+%         Ad_gi(:,:,i) = GetAdjoint(se3toSE3(Slist(:,i), -theta(i))*inverseTransmat(Mlist(:,:,i)));
+        Ad_gi(:,:,i) = GetAdjoint(se3toSE3(-A_i(:,i), theta(i))*inverseTransmat(Mlist(:,:,i)));
         V_i(:,i+1) = A_i(:,i)*theta_dot(i) + Ad_gi(:,:,i)*V_i(:,i);
         Vdot_i(:,i+1) = A_i(:,i)*theta_double_dot(i) + Ad_gi(:,:,i)*Vdot_i(:,i) + getSmallAdjoint(V_i(:,i+1))*A_i(:,i)*theta_dot(i);
     end
@@ -35,7 +39,7 @@ function [tau, F_i, V_i, Vdot_i, A_i, Ad_gi] = InverseDynamics(Mi, Mlist, Glist,
     % Backward iterations of the Newton-Euler inverse dynamics algorithm.
 
     for i = n:-1:1
-       F_i(:,i) = Ad_gi(:,:,i+1)*F_i(:,i+1) +  Glist(:,:,i)*Vdot_i(:,i+1) - (getSmallAdjoint(V_i(:,i+1)))'*Glist(:,:,i)*Vdot_i(:,i+1);
+       F_i(:,i) = Ad_gi(:,:,i+1)'*F_i(:,i+1) +  Glist(:,:,i)*Vdot_i(:,i+1) - (getSmallAdjoint(V_i(:,i+1)))'*Glist(:,:,i)*V_i(:,i+1);
        tau(i) = F_i(:,i)'*A_i(:,i);
     end
 

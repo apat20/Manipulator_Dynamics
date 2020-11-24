@@ -16,10 +16,15 @@
 
 
 %%
-function exp_twist_theta = GetExponential(omega, theta, q)
+function exp_twist_theta = GetExponential(twist, theta, q)
     
     %The identity matrix 'I'
     I = eye(3);
+    
+%     Omega corresponds to the unit rotation axis, and theta corresponds to
+%     the angle of rotation about that axis.
+    v = twist(1:3);
+    omega = twist(4:6);
     
     %Skew symmetric form of the omega vector
     omega_hat = skewSymmetric(omega);
@@ -33,5 +38,8 @@ function exp_twist_theta = GetExponential(omega, theta, q)
    %Calculating the transformation using the exponential of twist formula
    exp_twist_theta = [exp_omega_hat_theta, (I - exp_omega_hat_theta)*q;
                       zeros(1,3),           1];
+% % The expression below is derived from Modern Robotics by Kevin Lynch.            
+%    exp_twist_theta = [exp_omega_hat_theta, (I*theta + (1-cos(theta))*omega_hat + (theta-sin(theta))*omega_hat^2)*v;
+%                       zeros(1,3),           1];               
    
 end

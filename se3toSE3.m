@@ -15,8 +15,8 @@ function exp_twist_hat_theta = se3toSE3(twist, theta)
     
 %     When angular velocity is not equal to zero.
     
-    exp_twist_hat_theta = [exp_omega_hat_theta, (I - exp_omega_hat_theta)*cross(omega, v) + omega*omega'*v*theta;
+    exp_twist_hat_theta = [exp_omega_hat_theta, (I - exp_omega_hat_theta)*cross(omega, v);
                            zeros(1,3),           1];
-    
-    
+
+
 end

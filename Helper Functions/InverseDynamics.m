@@ -1,4 +1,4 @@
-function [tau, F_i, V_i, Vdot_i, A_i, Ad_gi] = InverseDynamics(Mi, Mlist, Glist, Slist, theta, theta_dot, theta_double_dot, Ftip, g, q)
+function [tau, F_i, V_i, Vdot_i, A_i, Ad_gi] = InverseDynamics(Mi, Mlist, Glist, Slist, theta, theta_dot, theta_double_dot, Ftip, g)
 
     n = size(theta,1);
 

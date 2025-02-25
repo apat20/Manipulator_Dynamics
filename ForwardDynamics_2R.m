@@ -1,6 +1,10 @@
+% By: Aditya Patankar
+
 close all;
 clear all;
 clc;
+
+addpath("Helper Functions/")
 
 % Reading the required data from the text file.
 data = getData('2R.txt');
@@ -89,7 +93,7 @@ theta_double_dot_mat = zeros(n, size(taumat,2));
 
 for i = 1:size(taumat,2)-1
     for j = 1:Res
-        theta_double_dot_new = FowardDynamics(Mi, Mlist, Glist, twist_list, theta, theta_dot, Ftip(:,i), taumat(:,i), g);
+        theta_double_dot_new = ForwardDynamics(Mi, Mlist, Glist, twist_list, theta, theta_dot, Ftip(:,i), taumat(:,i), g);
         theta_double_dot_mat(:,i) = theta_double_dot_new;
         alpha= dt/Res;
         [theta_next, theta_dot_next] = EulerIntegration(theta_new_mat(:,i), theta_dot_new_mat(:,i), theta_double_dot_new, alpha);

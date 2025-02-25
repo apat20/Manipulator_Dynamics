@@ -1,3 +1,7 @@
+% By: Aditya Patankar
+
+addpath("Helper Functions/")
+
 close all;
 clear all;
 clc;

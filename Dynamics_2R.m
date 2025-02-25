@@ -2,6 +2,8 @@ close all;
 clear all;
 clc;
 
+addpath("Helper Functions/")
+
 % Reading the required data from the text file.
 data = getData('2R.txt');
 [x,~] = size(data{1});
